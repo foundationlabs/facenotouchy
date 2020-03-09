@@ -1,6 +1,9 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+import path from 'path'
+
+const IS_DEV = process.env.NODE_ENV === 'development'
 
 /**
  * Set `__static` path to static files in production
@@ -11,7 +14,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
+const winURL = IS_DEV
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
@@ -20,9 +23,18 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 1,
     useContentSize: true,
-    width: 1000
+    width: 1,
+    icon: path.join(__dirname, 'static/icons/facenotouchy.icns'),
+    alwaysOnTop: true,
+    y: 0,
+    x: 0,
+    minimizable: false,
+    frame: false,
+    titleBarStyle: 'hidden',
+    type: 'desktop',
+    title: 'FaceNoTouchy'
   })
 
   mainWindow.loadURL(winURL)

@@ -1,8 +1,11 @@
 <template>
   <div id="wrapper">
-    <main>
-      <h1>PoseNet Example</h1>
-      <canvas id="canvas" width="640" height="480"></canvas> 
+    <main style="display: block">
+      <h1>FaceNoTouchy</h1>
+      <p>None of this data leaves your computer.</p>
+      <p>All the computation happens locally.</p>
+      <br/>
+      <canvas id="canvas" width="640" height="480"></canvas>
       <video id="video" width="640" height="480" autoplay style="display: none"></video>
     </main>
   </div>
@@ -39,7 +42,7 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 60px 80px;
+      padding: 50px 60px;
     width: 100vw;
   }
 

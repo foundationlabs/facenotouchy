@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'browser-app'
+    name: 'face-no-touchy'
   }
 </script>
 

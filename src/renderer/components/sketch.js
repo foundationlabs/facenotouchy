@@ -11,7 +11,6 @@ PoseNet using p5.js
 
 import ml5 from 'ml5'
 
-
 export default function run() {
   // Grab elements, create settings, etc.
   var video = document.getElementById('video');
@@ -32,7 +31,7 @@ export default function run() {
 
   // A function to draw the video and poses into the canvas.
   // This function is independent of the result of posenet
-  // This way the video will not seem slow if poseNet 
+  // This way the video will not seem slow if poseNet
   // is not detecting a position
   function drawCameraIntoCanvas() {
     // Draw the video element into the canvas
@@ -47,17 +46,71 @@ export default function run() {
 
   // Create a new poseNet method with a single detection
   // const poseNet = ml5.poseNet(video, 'single', gotPoses);
-  // You can optionally call it for multiple poses 
+  // You can optionally call it for multiple poses
   const poseNet = new ml5.poseNet(video, 'multiple', modelLoaded);
 
   // A function that gets called every time there's an update from the model
   function modelLoaded(results) {
-    console.log("model loaded");
+    console.log("model:", results);
   }
+
+  function debounce(func, wait, immediate) {
+    var timeout;
+
+    return function executedFunction() {
+      var context = this;
+      var args = arguments;
+
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      var callNow = immediate && !timeout;
+
+      clearTimeout(timeout);
+
+      timeout = setTimeout(later, wait);
+
+      if (callNow) func.apply(context, args);
+    };
+  };
+
+  var notify = debounce(function() {
+    let notifyOfTouch = new Notification('You touched your face', {
+      body: 'Don\'t do that.'
+    })
+  }, 1000, true);
+
+
 
   // Listen to new 'pose' events
   poseNet.on('pose', function (results) {
     poses = results;
+
+    const rightWristPosition = poses[0]["pose"]["keypoints"][10]["position"];
+    const leftWristPosition = poses[0]["pose"]["keypoints"][9]["position"];
+    const nosePosition = poses[0]["pose"]["keypoints"][0]["position"];
+
+    const rightWristDistanceToNose = Math.hypot(nosePosition["x"]-rightWristPosition["x"], nosePosition["y"]-rightWristPosition["y"])
+    const rightWristInFrame = !!(poses[0]["pose"]["keypoints"][10]["score"] > 0.5);
+
+    const leftWristDistanceToNose = Math.hypot(nosePosition["x"]-leftWristPosition["x"], nosePosition["y"]-leftWristPosition["y"])
+    const leftWristInFrame = !!(poses[0]["pose"]["keypoints"][9]["score"] > 0.5);
+
+    if (rightWristInFrame) {
+      if (rightWristDistanceToNose < 225) {
+        console.log("right wrist touched")
+        notify()
+      }
+    }
+
+    if (leftWristInFrame) {
+      if (leftWristDistanceToNose < 225) {
+        console.log("left wrist touched")
+        notify()
+      }
+    }
   });
 
   // A function to draw ellipses over the detected keypoints
@@ -70,10 +123,10 @@ export default function run() {
         let keypoint = poses[i].pose.keypoints[j];
         // Only draw an ellipse is the pose probability is bigger than 0.2
         if (keypoint.score > 0.2) {
-          ctx.fillStyle="#FF0000";
+          ctx.fillStyle="#935FD3";
 
           ctx.beginPath();
-          ctx.arc(keypoint.position.x, keypoint.position.y, 10, 0, 2 * Math.PI);
+          ctx.arc(keypoint.position.x, keypoint.position.y, 5, 0, 2 * Math.PI);
 
           ctx.stroke();
         }
@@ -98,4 +151,3 @@ export default function run() {
     }
   }
 }
-
