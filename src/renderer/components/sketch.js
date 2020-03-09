@@ -82,8 +82,6 @@ export default function run() {
     })
   }, 1000, true);
 
-
-
   // Listen to new 'pose' events
   poseNet.on('pose', function (results) {
     poses = results;
@@ -99,15 +97,13 @@ export default function run() {
     const leftWristInFrame = !!(poses[0]["pose"]["keypoints"][9]["score"] > 0.5);
 
     if (rightWristInFrame) {
-      if (rightWristDistanceToNose < 225) {
-        console.log("right wrist touched")
+      if (rightWristDistanceToNose < 205) {
         notify()
       }
     }
 
     if (leftWristInFrame) {
-      if (leftWristDistanceToNose < 225) {
-        console.log("left wrist touched")
+      if (leftWristDistanceToNose < 205) {
         notify()
       }
     }
@@ -126,7 +122,7 @@ export default function run() {
           ctx.fillStyle="#935FD3";
 
           ctx.beginPath();
-          ctx.arc(keypoint.position.x, keypoint.position.y, 5, 0, 2 * Math.PI);
+          ctx.arc(keypoint.position.x, keypoint.position.y, 10, 0, 2 * Math.PI);
 
           ctx.stroke();
         }
