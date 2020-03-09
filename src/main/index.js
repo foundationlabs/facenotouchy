@@ -57,6 +57,15 @@ app.on('ready', () => {
     app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
     app.exit(0)
   })
+
+  if (IS_DEV) {
+    return
+  }
+
+  setInterval(function () {
+    app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+    app.exit(0)
+  }, 60000)
 })
 
 app.on('window-all-closed', () => {
