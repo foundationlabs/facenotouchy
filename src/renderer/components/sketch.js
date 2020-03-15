@@ -98,12 +98,14 @@ export default function run() {
 
     if (rightWristInFrame) {
       if (rightWristDistanceToNose < 205) {
+        console.log("touching")
         notify()
       }
     }
 
     if (leftWristInFrame) {
       if (leftWristDistanceToNose < 205) {
+        console.log("touching")
         notify()
       }
     }

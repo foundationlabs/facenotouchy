@@ -1,10 +1,10 @@
 <template>
   <div id="wrapper">
     <main style="display: block">
-      <h1>FaceNoTouchy</h1>
+      <!-- <h1>FaceNoTouchy</h1>
       <p>None of this data leaves your computer.</p>
       <p>All the computation happens locally.</p>
-      <br/>
+      <br/> -->
       <canvas id="canvas" width="640" height="480"></canvas>
       <video id="video" width="640" height="480" autoplay style="display: none"></video>
     </main>
